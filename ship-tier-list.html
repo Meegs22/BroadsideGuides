@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ship Tier List — BroadsideGuides.com</title>
+  <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --parch:    #f0e6cc;
+      --parch-dk: #ddd0b0;
+      --parch-lt: #fdf9f0;
+      --ink:      #1e100a;
+      --ink-lt:   #3a2010;
+      --rust:     #7a2e10;
+      --copper:   #9b4a1a;
+      --verdigris:#2a5e50;
+      --aged:     #5a4830;
+      --sepia:    #7a6040;
+      --cream:    #faf6ec;
+      --border:   rgba(90,72,48,0.35);
+      --s-tier:   #7a2e10;
+      --a-tier:   #2a5e50;
+      --b-tier:   #2a4a7a;
+      --c-tier:   #5a3a7a;
+      --d-tier:   #4a4a4a;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--parch);
+      color: var(--ink);
+      font-family: 'Lora', Georgia, serif;
+      font-size: 17px;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='t'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23t)' opacity='0.08'/%3E%3C/svg%3E");
+      background-size: 400px;
+      mix-blend-mode: multiply;
+    }
+
+    body::after {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background: radial-gradient(ellipse at center, transparent 40%, rgba(90,60,20,0.15) 100%);
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 3rem; height: 64px;
+      background: rgba(225,210,180,0.96);
+      backdrop-filter: blur(8px);
+      border-bottom: 2px solid var(--sepia);
+      box-shadow: 0 2px 12px rgba(30,16,10,0.15);
+    }
+
+    .nav-logo {
+      font-family: 'IM Fell English', serif;
+      font-size: 1.4rem; color: var(--rust);
+      text-decoration: none;
+    }
+
+    .nav-logo span { color: var(--aged); font-style: italic; }
+
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+
+    .nav-links a {
+      font-family: 'Lora', serif; font-size: 0.8rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--aged); text-decoration: none; transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--rust); }
+
+    /* PAGE HEADER */
+    .page-header {
+      position: relative; z-index: 2;
+      padding: 7rem 2rem 3.5rem;
+      text-align: center;
+      background: var(--parch-lt);
+      border-bottom: 2px solid var(--border);
+    }
+
+    .breadcrumb {
+      font-family: 'Lora', serif; font-style: italic;
+      font-size: 0.78rem; color: var(--sepia);
+      margin-bottom: 1.25rem;
+    }
+
+    .breadcrumb a { color: var(--sepia); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--rust); text-decoration: underline; }
+
+    .update-badge {
+      display: inline-block;
+      font-family: 'Lora', serif; font-style: italic;
+      font-size: 0.75rem; color: var(--verdigris);
+      border: 1px solid rgba(42,94,80,0.4);
+      padding: 0.25rem 1rem; margin-bottom: 0.75rem;
+      background: rgba(42,94,80,0.05);
+    }
+
+    .page-title {
+      font-family: 'IM Fell English', serif;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      color: var(--ink); margin-bottom: 0.4rem;
+    }
+
+    .page-subtitle {
+      font-family: 'Lora', serif; font-style: italic;
+      font-size: 0.95rem; color: var(--aged);
+    }
+
+    /* INK RULE */
+    .ink-rule {
+      position: relative; z-index: 2;
+      height: 22px; overflow: hidden;
+      background: var(--parch-dk);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .ink-rule::before {
+      content: '⚓ · · · · · · · · · · · · · · · · · · · · · · · · · ⚓ · · · · · · · · · · · · · · · · · · · · · · · · · ⚓';
+      font-size: 0.6rem; color: var(--sepia); opacity: 0.4;
+      letter-spacing: 0.15em; white-space: nowrap;
+    }
+
+    /* MAIN LAYOUT */
+    .main-layout {
+      position: relative; z-index: 2;
+      max-width: 1100px; margin: 0 auto;
+      padding: 4rem 2rem;
+      display: grid;
+      grid-template-columns: 1fr 260px;
+      gap: 3rem; align-items: start;
+    }
+
+    /* INTRO */
+    .tier-intro {
+      font-size: 0.95rem; line-height: 1.8;
+      color: var(--aged); font-style: italic;
+      margin-bottom: 2rem;
+      padding: 1.25rem 1.5rem;
+      background: var(--cream);
+      border-left: 3px solid var(--rust);
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* TIER ROWS */
+    .tier-section { margin-bottom: 0.75rem; }
+
+    .tier-row {
+      display: flex; align-items: stretch;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      box-shadow: 2px 2px 0 var(--parch-dk);
+      transition: box-shadow 0.2s;
+    }
+
+    .tier-row:hover { box-shadow: 3px 3px 0 var(--border); }
+
+    .tier-label {
+      display: flex; align-items: center; justify-content: center;
+      width: 62px; min-width: 62px; flex-shrink: 0;
+      font-family: 'IM Fell English', serif;
+      font-size: 1.8rem; color: var(--cream);
+    }
+
+    .tier-s .tier-label { background: var(--s-tier); }
+    .tier-a .tier-label { background: var(--a-tier); }
+    .tier-b .tier-label { background: var(--b-tier); }
+    .tier-c .tier-label { background: var(--c-tier); }
+    .tier-d .tier-label { background: var(--d-tier); }
+
+    .tier-ships {
+      flex: 1; display: flex; flex-wrap: wrap; gap: 0.6rem;
+      padding: 0.9rem 1.1rem; background: var(--cream);
+      align-items: center;
+    }
+
+    .ship-chip {
+      display: flex; align-items: center; gap: 0.5rem;
+      background: var(--parch);
+      border: 1px solid var(--border);
+      padding: 0.4rem 0.85rem;
+      cursor: pointer; transition: all 0.15s;
+      box-shadow: 1px 1px 0 var(--border);
+    }
+
+    .ship-chip:hover {
+      background: var(--rust); border-color: var(--ink-lt);
+      transform: translate(-1px,-1px);
+      box-shadow: 2px 2px 0 var(--ink-lt);
+    }
+
+    .ship-chip:hover .ship-name { color: var(--cream); }
+    .ship-chip:hover .ship-type { color: rgba(250,246,236,0.7); }
+
+    .ship-name {
+      font-family: 'IM Fell English', serif;
+      font-size: 0.9rem; color: var(--ink);
+    }
+
+    .ship-type {
+      font-family: 'Lora', serif; font-style: italic;
+      font-size: 0.7rem; color: var(--sepia);
+    }
+
+    /* MODAL */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(30,16,10,0.75);
+      backdrop-filter: blur(4px);
+      display: none; align-items: center; justify-content: center;
+      padding: 2rem;
+    }
+
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: var(--cream);
+      border: 2px solid var(--sepia);
+      border-top: 4px solid var(--rust);
+      max-width: 500px; width: 100%;
+      padding: 2.5rem;
+      position: relative;
+      box-shadow: 6px 6px 0 var(--parch-dk), 8px 8px 0 var(--border);
+      animation: modalIn 0.25s ease;
+    }
+
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.96) translateY(8px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal-close {
+      position: absolute; top: 0.9rem; right: 1.1rem;
+      background: none; border: none; color: var(--sepia);
+      font-size: 1.4rem; cursor: pointer; line-height: 1;
+      transition: color 0.2s;
+    }
+
+    .modal-close:hover { color: var(--rust); }
+
+    .modal-tier-badge {
+      display: inline-block;
+      font-family: 'Lora', serif; font-style: italic;
+      font-size: 0.72rem; letter-spacing: 0.15em;
+      padding: 0.2rem 0.75rem; margin-bottom: 0.75rem;
+      color: var(--cream);
+    }
+
+    .modal-ship-name {
+      font-family: 'IM Fell English', serif;
+      font-size: 2rem; color: var(--ink); margin-bottom: 0.2rem;
+    }
+
+    .modal-ship-type {
+      font-family: 'Lora', serif; font-style: italic;
+      font-size: 0.85rem; color: var(--verdigris);
+      margin-bottom: 1.25rem;
+    }
+
+    .modal-stats {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0.6rem; margin-bottom: 1.5rem;
+    }
+
+    .stat-row {
+      background: var(--parch);
+      border: 1px solid var(--border);
+      padding: 0.6rem 0.8rem;
+    }
+
+    .stat-name {
+      font-family: 'Lora', serif; font-size: 0.62rem;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--sepia); margin-bottom: 0.2rem;
+    }
+
+    .stat-value {
+      font-family: 'IM Fell English', serif;
+      font-size: 1rem; color: var(--ink);
+    }
+
+    .stat-bar-wrap { height: 3px; background: var(--parch-dk); margin-top: 0.25rem; }
+
+    .stat-bar {
+      height: 100%;
+      background: var(--rust);
+      transition: width 0.6s ease;
+    }
+
+    .modal-desc {
+      font-size: 0.92rem; line-height: 1.75;
+      color: var(--aged); font-style: italic;
+    }
+
+    /* SIDEBAR */
+    .sidebar { display: flex; flex-direction: column; gap: 1.5rem; }
+
+    .sidebar-card {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--rust);
+      padding: 1.5rem;
+      box-shadow: 2px 2px 0 var(--parch-dk);
+    }
+
+    .sidebar-title {
+      font-family: 'IM Fell English', serif;
+      font-size: 1rem; color: var(--ink);
+      margin-bottom: 1rem; padding-bottom: 0.6rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .legend-item {
+      display: flex; align-items: center; gap: 0.75rem;
+      margin-bottom: 0.5rem; font-family: 'Lora', serif;
+      font-style: italic; font-size: 0.85rem; color: var(--aged);
+    }
+
+    .legend-dot { width: 14px; height: 14px; flex-shrink: 0; }
+
+    .ad-sidebar {
+      background: rgba(90,72,48,0.04);
+      border: 1px dashed var(--border);
+      padding: 1.5rem; text-align: center;
+      color: var(--sepia); opacity: 0.5;
+      font-family: 'Lora', serif; font-style: italic;
+      font-size: 0.8rem; min-height: 250px;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .quick-links a {
+      display: block; font-family: 'Lora', serif; font-style: italic;
+      font-size: 0.85rem; color: var(--aged);
+      text-decoration: none; padding: 0.4rem 0;
+      border-bottom: 1px solid rgba(90,72,48,0.12);
+      transition: color 0.15s, padding-left 0.15s;
+    }
+
+    .quick-links a:hover { color: var(--rust); padding-left: 0.4rem; }
+
+    /* AD */
+    .ad-banner {
+      background: rgba(90,72,48,0.04);
+      border: 1px dashed var(--border);
+      padding: 1.25rem; text-align: center;
+      margin: 2rem 0;
+      color: var(--sepia); opacity: 0.5;
+      font-family: 'Lora', serif; font-style: italic; font-size: 0.8rem;
+    }
+
+    /* COMMENTS */
+    .comments-section {
+      position: relative; z-index: 2;
+      max-width: 800px; margin: 0 auto;
+      padding: 4rem 2rem 6rem;
+    }
+
+    .comments-header {
+      font-family: 'Lora', serif; font-style: italic;
+      font-size: 0.8rem; color: var(--sepia); margin-bottom: 0.4rem;
+    }
+
+    .comments-title {
+      font-family: 'IM Fell English', serif;
+      font-size: 1.9rem; color: var(--ink); margin-bottom: 0.75rem;
+    }
+
+    .comments-rule {
+      display: flex; align-items: center; gap: 0.75rem; margin-bottom: 2.5rem;
+    }
+
+    .comments-rule-line {
+      flex: 1; height: 1px;
+      background: linear-gradient(90deg, var(--sepia), transparent);
+    }
+
+    .comments-rule-sym { color: var(--rust); font-size: 0.8rem; }
+
+    /* FORM */
+    .comment-form {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--rust);
+      padding: 2rem; margin-bottom: 3rem;
+      box-shadow: 3px 3px 0 var(--parch-dk);
+    }
+
+    .form-title {
+      font-family: 'IM Fell English', serif;
+      font-size: 1.1rem; color: var(--ink); margin-bottom: 1.25rem;
+    }
+
+    .form-row {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1rem; margin-bottom: 1rem;
+    }
+
+    .form-group { display: flex; flex-direction: column; gap: 0.35rem; }
+
+    .form-label {
+      font-family: 'Lora', serif; font-size: 0.68rem;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--sepia);
+    }
+
+    .form-input, .form-textarea {
+      background: var(--parch);
+      border: 1px solid var(--border);
+      color: var(--ink); font-family: 'Lora', serif;
+      font-style: italic; font-size: 0.95rem;
+      padding: 0.6rem 0.9rem; outline: none;
+      transition: border-color 0.2s; resize: none;
+    }
+
+    .form-input:focus, .form-textarea:focus {
+      border-color: var(--rust);
+      background: var(--cream);
+    }
+
+    .form-input::placeholder, .form-textarea::placeholder {
+      color: rgba(90,72,48,0.4);
+    }
+
+    .form-textarea { min-height: 95px; margin-bottom: 1rem; width: 100%; }
+
+    .btn-submit {
+      font-family: 'Lora', serif; font-size: 0.75rem;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--cream); background: var(--rust);
+      border: 2px solid var(--ink-lt);
+      padding: 0.7rem 2rem; cursor: pointer;
+      box-shadow: 3px 3px 0 var(--ink-lt);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .btn-submit:hover {
+      transform: translate(-2px,-2px);
+      box-shadow: 5px 5px 0 var(--ink-lt);
+    }
+
+    /* COMMENT LIST */
+    .comment-list { display: flex; flex-direction: column; gap: 1.25rem; }
+
+    .comment {
+      background: var(--cream);
+      border-left: 3px solid var(--sepia);
+      border-bottom: 1px solid var(--border);
+      padding: 1.25rem 1.5rem;
+      transition: border-left-color 0.2s;
+    }
+
+    .comment:hover { border-left-color: var(--rust); }
+    .comment.reply { margin-left: 2.5rem; border-left-color: var(--verdigris); }
+
+    .comment-meta {
+      display: flex; align-items: center; gap: 0.85rem;
+      margin-bottom: 0.65rem;
+    }
+
+    .comment-avatar {
+      width: 34px; height: 34px;
+      background: var(--parch-dk);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'IM Fell English', serif; font-size: 0.85rem;
+      color: var(--rust); flex-shrink: 0;
+    }
+
+    .comment-author {
+      font-family: 'IM Fell English', serif;
+      font-size: 0.95rem; color: var(--ink);
+    }
+
+    .comment-date {
+      font-style: italic; font-size: 0.75rem;
+      color: var(--sepia); opacity: 0.6; margin-left: auto;
+    }
+
+    .comment-body {
+      font-size: 0.9rem; line-height: 1.7;
+      color: var(--aged); font-style: italic;
+    }
+
+    .comment-reply {
+      margin-top: 0.6rem; background: none; border: none;
+      font-family: 'Lora', serif; font-style: italic;
+      font-size: 0.75rem; color: var(--verdigris);
+      cursor: pointer; padding: 0; transition: color 0.2s;
+    }
+
+    .comment-reply:hover { color: var(--rust); }
+
+    /* FOOTER */
+    footer {
+      position: relative; z-index: 2;
+      background: var(--ink);
+      border-top: 3px solid var(--rust);
+      padding: 3rem 2rem 2rem; text-align: center;
+    }
+
+    .footer-logo {
+      font-family: 'IM Fell English', serif;
+      font-size: 1.6rem; color: var(--parch); margin-bottom: 0.4rem;
+    }
+
+    .footer-links {
+      display: flex; gap: 2rem; justify-content: center;
+      list-style: none; flex-wrap: wrap; margin-bottom: 1.5rem;
+    }
+
+    .footer-links a {
+      font-family: 'Lora', serif; font-size: 0.72rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: rgba(240,230,204,0.3); text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--parch); }
+
+    .footer-copy {
+      font-size: 0.72rem; color: rgba(240,230,204,0.18);
+      font-style: italic;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 900px) {
+      .main-layout { grid-template-columns: 1fr; }
+      nav { padding: 0 1.5rem; }
+      .nav-links { display: none; }
+      .form-row { grid-template-columns: 1fr; }
+      .comment.reply { margin-left: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="index.html">Broadside<span>Guides</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="#">Guides</a></li>
+    <li><a href="#">Ships</a></li>
+    <li><a href="#">About</a></li>
+  </ul>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <p class="breadcrumb"><a href="index.html">Home</a> &nbsp;/&nbsp; Ships &nbsp;/&nbsp; Tier List</p>
+  <span class="update-badge">Updated February 2025</span>
+  <h1 class="page-title">Ship Tier List</h1>
+  <p class="page-subtitle">Every vessel ranked — from bilge barge to battle legend. Click any ship for full stats.</p>
+</div>
+
+<div class="ink-rule"></div>
+
+<!-- MAIN LAYOUT -->
+<div class="main-layout">
+  <div class="content">
+
+    <div class="tier-intro">
+      This tier list ranks all currently available ships based on overall combat effectiveness, speed, maneuverability, and value for gold. Rankings updated after each major patch. <strong style="font-style:normal;color:var(--rust);">Click any ship</strong> to see full stats and a detailed breakdown.
+    </div>
+
+    <!-- S TIER -->
+    <div class="tier-section">
+      <div class="tier-row tier-s">
+        <div class="tier-label">S</div>
+        <div class="tier-ships">
+          <div class="ship-chip" onclick="openModal('Blackwind','Warship','S','The undisputed king of combat. Exceptional broadside firepower, sturdy hull, and surprising speed for its class. The Blackwind dominates open-water PvP and is the endgame goal for combat captains.','95','88','72','90')">
+            <span class="ship-name">Blackwind</span><span class="ship-type">⚔ Warship</span>
+          </div>
+          <div class="ship-chip" onclick="openModal('Sea Falcon','Frigate','S','Lightning-fast with excellent cannon range. The Sea Falcon is the premier hit-and-run vessel — kite enemies, land precision shots, and vanish before they can respond.','78','99','95','85')">
+            <span class="ship-name">Sea Falcon</span><span class="ship-type">🌊 Frigate</span>
+          </div>
+          <div class="ship-chip" onclick="openModal('Iron Crown','Man-o-War','S','The most durable ship afloat. Built for sustained battles and fleet warfare. Its broadside weight is unmatched — if it locks onto you, escape is unlikely.','99','70','55','92')">
+            <span class="ship-name">Iron Crown</span><span class="ship-type">⚓ Man-o-War</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- A TIER -->
+    <div class="tier-section">
+      <div class="tier-row tier-a">
+        <div class="tier-label">A</div>
+        <div class="tier-ships">
+          <div class="ship-chip" onclick="openModal('Stormchaser','Brigantine','A','Excellent all-rounder. Fast enough to pick fights, tough enough to win them. Great stepping stone toward S-tier and viable in endgame with the right upgrades.','80','90','88','78')">
+            <span class="ship-name">Stormchaser</span><span class="ship-type">🌊 Brigantine</span>
+          </div>
+          <div class="ship-chip" onclick="openModal('Razortide','Sloop','A','The best small combat ship in the game. Incredible agility and surprising punch for its size. Ideal for solo players who want to harass larger enemies.','65','95','99','70')">
+            <span class="ship-name">Razortide</span><span class="ship-type">⚡ Sloop</span>
+          </div>
+          <div class="ship-chip" onclick="openModal('Grand Mercia','Galleon','A','Top trading vessel that can hold its own in a fight. Massive cargo hold and respectable cannons. The merchant who demands muscle.','85','72','60','88')">
+            <span class="ship-name">Grand Mercia</span><span class="ship-type">💰 Galleon</span>
+          </div>
+          <div class="ship-chip" onclick="openModal('Tempest','Frigate','A','Worthy rival to the Sea Falcon. Slightly less speed but more firepower. Rewards aggressive captains who close distance fast.','82','91','85','80')">
+            <span class="ship-name">Tempest</span><span class="ship-type">🌊 Frigate</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- B TIER -->
+    <div class="tier-section">
+      <div class="tier-row tier-b">
+        <div class="tier-label">B</div>
+        <div class="tier-ships">
+          <div class="ship-chip" onclick="openModal('Horizont','Brig','B','The classic starter ship and a reliable mid-game workhorse. Nothing exceptional but nothing weak. Cheap to upgrade — most players first real ship.','68','75','72','65')">
+            <span class="ship-name">Horizont</span><span class="ship-type">⚓ Brig</span>
+          </div>
+          <div class="ship-chip" onclick="openModal('Saltwind','Corvette','B','Decent combat ship held back by mediocre hull strength. Works well in coordinated fleet play where it can focus fire from a safe angle.','70','82','78','60')">
+            <span class="ship-name">Saltwind</span><span class="ship-type">⚔ Corvette</span>
+          </div>
+          <div class="ship-chip" onclick="openModal('Merchant Prince','Fluyt','B','The budget trading ship. Huge cargo capacity at the cost of almost zero combat ability. Perfect for safe trade routes.','60','55','50','92')">
+            <span class="ship-name">Merchant Prince</span><span class="ship-type">💰 Fluyt</span>
+          </div>
+          <div class="ship-chip" onclick="openModal('Redwave','Brigantine','B','Solid mid-tier choice. Outclassed by the Stormchaser but significantly cheaper. Great for the early-to-mid game transition.','72','78','75','68')">
+            <span class="ship-name">Redwave</span><span class="ship-type">🌊 Brigantine</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- C TIER -->
+    <div class="tier-section">
+      <div class="tier-row tier-c">
+        <div class="tier-label">C</div>
+        <div class="tier-ships">
+          <div class="ship-chip" onclick="openModal('Driftwood','Sloop','C','The true starter vessel. Gets the job done for your first few hours but should be replaced as soon as possible.','40','60','65','45')">
+            <span class="ship-name">Driftwood</span><span class="ship-type">⚡ Sloop</span>
+          </div>
+          <div class="ship-chip" onclick="openModal('Old Crow','Galleon','C','An older galleon model with outdated stats. Outclassed by the Grand Mercia in every way. Not worth upgrading.','62','58','50','70')">
+            <span class="ship-name">Old Crow</span><span class="ship-type">💰 Galleon</span>
+          </div>
+          <div class="ship-chip" onclick="openModal('Rustbucket','Brig','C','The budget brig. Functional but barely. Save up and skip this one if you can.','50','62','58','55')">
+            <span class="ship-name">Rustbucket</span><span class="ship-type">⚓ Brig</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- D TIER -->
+    <div class="tier-section">
+      <div class="tier-row tier-d">
+        <div class="tier-label">D</div>
+        <div class="tier-ships">
+          <div class="ship-chip" onclick="openModal('Plank & Prayer','Sloop','D','The joke ship of WOSB. Almost no cannon ports, terrible hull, and barely floats. Avoid at all costs.','20','40','55','30')">
+            <span class="ship-name">Plank & Prayer</span><span class="ship-type">⚡ Sloop</span>
+          </div>
+          <div class="ship-chip" onclick="openModal('Barnacle','Fluyt','D','Technically a ship. That is about all that can be said in its favor. Use the gold on literally anything else.','25','38','35','50')">
+            <span class="ship-name">Barnacle</span><span class="ship-type">💰 Fluyt</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ad-banner">Advertisement — Google AdSense (728×90)</div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-card">
+      <p class="sidebar-title">Tier Legend</p>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--s-tier)"></div> S — Best in class</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--a-tier)"></div> A — Excellent choice</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--b-tier)"></div> B — Solid, reliable</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--c-tier)"></div> C — Below average</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--d-tier)"></div> D — Avoid</div>
+    </div>
+
+    <div class="ad-sidebar">Advertisement<br>Google AdSense<br>(300×250)</div>
+
+    <div class="sidebar-card quick-links">
+      <p class="sidebar-title">More Guides</p>
+      <a href="#">Beginner's Survival Guide</a>
+      <a href="#">Best Gold Farming Routes</a>
+      <a href="#">Boarding Mechanics Guide</a>
+      <a href="#">Skill Point Build Guide</a>
+      <a href="#">Crafting & Upgrades</a>
+      <a href="#">Combat Mastery Guide</a>
+    </div>
+  </aside>
+</div>
+
+<div class="ink-rule"></div>
+
+<!-- COMMENTS -->
+<div class="comments-section">
+  <p class="comments-header">Captain's Logbook</p>
+  <h2 class="comments-title">Leave a Comment</h2>
+  <div class="comments-rule">
+    <div class="comments-rule-line"></div>
+    <span class="comments-rule-sym">✦</span>
+  </div>
+
+  <div class="comment-form">
+    <p class="form-title">Share your thoughts, corrections, or strategies</p>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Captain's Name *</label>
+        <input class="form-input" type="text" id="commentName" placeholder="Your username"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email (not shown)</label>
+        <input class="form-input" type="email" id="commentEmail" placeholder="you@example.com"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Your Message *</label>
+      <textarea class="form-textarea" id="commentText" placeholder="Disagree with a ranking? Found a hidden gem ship? Tell us..."></textarea>
+    </div>
+    <button class="btn-submit" onclick="submitComment()">⚓ &nbsp; Post Comment</button>
+  </div>
+
+  <div class="comment-list" id="commentList">
+    <div class="comment">
+      <div class="comment-meta">
+        <div class="comment-avatar">SC</div>
+        <div><div class="comment-author">SaltedCannon</div></div>
+        <span class="comment-date">Feb 14, 2025</span>
+      </div>
+      <p class="comment-body">The Sea Falcon is criminally underrated even at S tier — with a full speed build and the right wind angle you can outrun literally everything. Took down three Blackwinds in one session by kiting them into each other.</p>
+      <button class="comment-reply" onclick="setReply('SaltedCannon')">↩ Reply</button>
+    </div>
+    <div class="comment reply">
+      <div class="comment-meta">
+        <div class="comment-avatar">IK</div>
+        <div><div class="comment-author">IronKeel</div></div>
+        <span class="comment-date">Feb 15, 2025</span>
+      </div>
+      <p class="comment-body">Replying to SaltedCannon — the kiting strategy only works if they don't have a Razortide escort. I've shut down plenty of Falcons that way. Still top tier though.</p>
+      <button class="comment-reply" onclick="setReply('IronKeel')">↩ Reply</button>
+    </div>
+    <div class="comment">
+      <div class="comment-meta">
+        <div class="comment-avatar">TW</div>
+        <div><div class="comment-author">TideWatcher</div></div>
+        <span class="comment-date">Feb 10, 2025</span>
+      </div>
+      <p class="comment-body">Would push the Grand Mercia up to S for pure trading runs. You can pack it with gold and still fight off most pirates. Cargo capacity alone makes it worth it.</p>
+      <button class="comment-reply" onclick="setReply('TideWatcher')">↩ Reply</button>
+    </div>
+    <div class="comment">
+      <div class="comment-meta">
+        <div class="comment-avatar">BP</div>
+        <div><div class="comment-author">BilgePirate</div></div>
+        <span class="comment-date">Feb 7, 2025</span>
+      </div>
+      <p class="comment-body">D tier for the Barnacle is still too generous 😂 I accidentally bought one thinking it was a Brigantine. Lost 40k gold and my pride in one transaction.</p>
+      <button class="comment-reply" onclick="setReply('BilgePirate')">↩ Reply</button>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">BroadsideGuides</div>
+  <ul class="footer-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="#">Guides</a></li>
+    <li><a href="#">Ship Tier Lists</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Privacy Policy</a></li>
+  </ul>
+  <p class="footer-copy">© 2025 BroadsideGuides.com — Fan site. Not affiliated with World of Sea Battles.</p>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <span class="modal-tier-badge" id="modalTierBadge"></span>
+    <div class="modal-ship-name" id="modalName"></div>
+    <div class="modal-ship-type" id="modalType"></div>
+    <div class="modal-stats" id="modalStats"></div>
+    <p class="modal-desc" id="modalDesc"></p>
+  </div>
+</div>
+
+<script>
+  const tierColors = { S:'#7a2e10', A:'#2a5e50', B:'#2a4a7a', C:'#5a3a7a', D:'#4a4a4a' };
+
+  function openModal(name, type, tier, desc, firepower, speed, maneuver, cargo) {
+    document.getElementById('modalName').textContent = name;
+    document.getElementById('modalType').textContent = type;
+    document.getElementById('modalDesc').textContent = desc;
+    const badge = document.getElementById('modalTierBadge');
+    badge.textContent = tier + ' Tier';
+    badge.style.background = tierColors[tier];
+    badge.style.color = '#faf6ec';
+
+    const stats = [
+      { name: 'Firepower', value: firepower },
+      { name: 'Speed', value: speed },
+      { name: 'Maneuverability', value: maneuver },
+      { name: 'Cargo', value: cargo }
+    ];
+
+    document.getElementById('modalStats').innerHTML = stats.map(s => `
+      <div class="stat-row">
+        <span class="stat-name">${s.name}</span>
+        <span class="stat-value">${s.value}/100</span>
+        <div class="stat-bar-wrap">
+          <div class="stat-bar" style="width:0%" data-target="${s.value}%"></div>
+        </div>
+      </div>
+    `).join('');
+
+    document.getElementById('modalOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+
+    setTimeout(() => {
+      document.querySelectorAll('.stat-bar').forEach(bar => {
+        bar.style.width = bar.dataset.target;
+      });
+    }, 50);
+  }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function closeModalOutside(e) {
+    if (e.target === document.getElementById('modalOverlay')) closeModal();
+  }
+
+  let replyTo = null;
+
+  function setReply(username) {
+    replyTo = username;
+    document.getElementById('commentText').value = `Replying to ${username} — `;
+    document.getElementById('commentText').focus();
+    document.querySelector('.comment-form').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  function submitComment() {
+    const name = document.getElementById('commentName').value.trim();
+    const text = document.getElementById('commentText').value.trim();
+    if (!name || !text) { alert('Please enter your name and a comment.'); return; }
+
+    const initials = name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+    const dateStr = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    const isReply = replyTo !== null;
+
+    const comment = document.createElement('div');
+    comment.className = 'comment' + (isReply ? ' reply' : '');
+    comment.style.animation = 'fadeIn 0.4s ease both';
+    comment.innerHTML = `
+      <div class="comment-meta">
+        <div class="comment-avatar">${initials}</div>
+        <div><div class="comment-author">${name}</div></div>
+        <span class="comment-date">${dateStr}</span>
+      </div>
+      <p class="comment-body">${text}</p>
+      <button class="comment-reply" onclick="setReply('${name}')">↩ Reply</button>
+    `;
+
+    document.getElementById('commentList').appendChild(comment);
+    document.getElementById('commentName').value = '';
+    document.getElementById('commentEmail').value = '';
+    document.getElementById('commentText').value = '';
+    replyTo = null;
+    comment.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+</script>
+</body>
+</html>
